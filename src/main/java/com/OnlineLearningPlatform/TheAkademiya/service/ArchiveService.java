@@ -30,6 +30,9 @@ public class ArchiveService {
     @Autowired
     private InstructorArchiveRepository instructorArchiveRepository;
 
+    @Autowired
+    private CourseArchiveRepository courseArchiveRepository;
+
 
 
     @Transactional
@@ -42,9 +45,18 @@ public class ArchiveService {
             studentArchive.setFirstNameArchived(student.getFirstName());
             studentArchive.setLastNameArchived(student.getLastName());
             studentArchive.setCourse_archived(student.getCourse());
-//            studentArchive.setGuardianArchive(student.getGuardian());
             studentArchive.setEmailId(student.getEmailId());
             studentArchive.setYearLevel(student.getYearLevel());
+
+            Guardian guardian = student.getGuardian();
+            if (guardian != null) {
+                GuardianArchive guardianArchive = new GuardianArchive();
+                guardianArchive.setNameArchived(guardian.getName());
+                guardianArchive.setEmailArchived(guardian.getEmail());
+                guardianArchive.setMobileArchived(guardian.getMobile());
+                studentArchive.setGuardianArchive(guardianArchive);
+            }
+
             studentArchivedRepository.save(studentArchive);
 
             studentRepository.deleteById(studentId);
@@ -66,4 +78,33 @@ public class ArchiveService {
             instructorRepository.deleteById(instructorId);
         });
     }
+
+    @Transactional
+    public void archiveCourse(Long courseId) {
+        Optional<Course> courseOptional = courseRepository.findById(courseId);
+
+        courseOptional.ifPresent(course -> {
+            CourseArchive archivedCourse = new CourseArchive();
+            archivedCourse.setTitleArchived(course.getTitle());
+            archivedCourse.setCreditArchived(course.getCredit());
+
+            if (course.getCourseMaterial() != null) {
+                archivedCourse.setCourseMaterialArchived(course.getCourseMaterial());
+            }
+
+            if (course.getInstructor() != null) {
+                archivedCourse.setInstructorArchived(course.getInstructor());
+            }
+
+
+            if (course.getStudents() != null && !course.getStudents().isEmpty()) {
+                archivedCourse.setStudentsArchived(course.getStudents());
+            }
+            courseArchiveRepository.save(archivedCourse);
+
+            // Delete the original Course
+            courseRepository.deleteById(courseId);
+        });
+    }
+
 }
