@@ -1,14 +1,16 @@
 package com.OnlineLearningPlatform.TheAkademiya.repository;
 
 import com.OnlineLearningPlatform.TheAkademiya.model.Guardian;
+import com.OnlineLearningPlatform.TheAkademiya.model.Roles;
 import com.OnlineLearningPlatform.TheAkademiya.model.Student;
+import com.OnlineLearningPlatform.TheAkademiya.model.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
+import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 class StudentRepositoryTest {
     @Autowired
@@ -51,18 +53,28 @@ class StudentRepositoryTest {
     public void saveStudentWithGuardian2(){
 
         Guardian guardian = Guardian.builder()
-                .name("Kean")
-                .email("kean@email")
+                .name("Jane Doe")
+                .email("janedoe@email")
                 .mobile("09123456789")
                 .build();
 
         Student student = Student.builder()
-                .firstName("Jin")
-                .lastName("Alba")
-                .emailId("jin@email")
+                .firstName("John")
+                .lastName("Doe")
+                .emailId("johndoe@email")
                 .course("BSCS")
                 .yearLevel(4)
                 .guardian(guardian)
+                .build();
+
+        Roles studentRole = Roles.builder()
+                .roleName("ROLE_STUDENT")
+                .build();
+
+        User user = User.builder()
+                .username("johndoe123")
+                .password("12345john")
+                .roles(Set.of(studentRole))
                 .build();
 
         studentRepository.save(student);

@@ -23,12 +23,12 @@ public class InstructorController {
     @Autowired
     private ArchiveService archiveService;
 
-    @PostMapping("/newInstructor")
+    @PostMapping("/instructor/newInstructor")
     Instructor newInstructor(@RequestBody Instructor newInstructor){
         return instructorService.newInstructor(newInstructor);
     }
 
-    @GetMapping("/allInstructor")
+    @GetMapping("/instructor/allInstructor")
     List<Instructor> getAllInstructor(){
         return instructorRepository.findAll();
     }
@@ -44,7 +44,7 @@ public class InstructorController {
         return instructorService.updateInstructor(instructorId, newInstructor);
     }
 
-    @PutMapping("/instructorArchive/{instructorId}")
+    @PutMapping("/instructor/instructorArchive/{instructorId}")
     public ResponseEntity<?> archiveInstructor(@PathVariable Long instructorId){
         archiveService.InstructorArchive(instructorId);
         return ResponseEntity.ok("Success");

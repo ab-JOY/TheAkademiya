@@ -1,6 +1,8 @@
 package com.OnlineLearningPlatform.TheAkademiya.controller;
 
+import com.OnlineLearningPlatform.TheAkademiya.dto.StudentRegistrationDto;
 import com.OnlineLearningPlatform.TheAkademiya.model.Student;
+import com.OnlineLearningPlatform.TheAkademiya.model.User;
 import com.OnlineLearningPlatform.TheAkademiya.repository.StudentRepository;
 import com.OnlineLearningPlatform.TheAkademiya.service.ArchiveService;
 import com.OnlineLearningPlatform.TheAkademiya.service.StudentService;
@@ -22,12 +24,12 @@ public class StudentController {
     @Autowired
     ArchiveService archiveService;
 
-    @PostMapping("/newStudent")
+    @PostMapping("/student/newStudent")
     Student newStudent(@RequestBody Student newStudent){
         return studentService.newStudent(newStudent);
     }
 
-    @GetMapping("/allStudents")
+    @GetMapping("/student/allStudents")
     List<Student> getAllStudent(){
         return studentRepository.findAll();
     }
@@ -43,10 +45,16 @@ public class StudentController {
         return  studentService.updateStudent(studentId, newStudent);
     }
 
-    @PutMapping("studentArchive/{studentId}")
+    @PutMapping("/student/studentArchive/{studentId}")
     public ResponseEntity<?> archiveStudent(@PathVariable Long studentId){
         archiveService.StudentArchive(studentId);
         return ResponseEntity.ok("Success");
+    }
+
+    @PostMapping("/student/register")
+    public ResponseEntity<?> registerStudent(@RequestBody StudentRegistrationDto registrationDto) {
+        studentService.registerStudentWithUser(registrationDto.toStudent(), registrationDto.toUser());
+        return ResponseEntity.ok("Student registered successfully");
     }
 
 }

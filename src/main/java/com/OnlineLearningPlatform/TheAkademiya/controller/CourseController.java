@@ -22,12 +22,12 @@ public class CourseController {
     @Autowired
     ArchiveService archiveService;
 
-    @PostMapping("/newCourse")
+    @PostMapping("/course/newCourse")
     Course newCourse(@RequestBody Course newCourse){
         return courseService.newCourse(newCourse);
     }
 
-    @GetMapping("/allCourse")
+    @GetMapping("/course/allCourse")
     List<Course> getAllCourse(){
         return courseRepository.findAll();
     }
@@ -43,7 +43,7 @@ public class CourseController {
         return courseService.updateCourse(courseId, newCourse);
     }
 
-    @PutMapping("/courseArchive/{courseId}")
+    @PutMapping("/course/courseArchive/{courseId}")
     public ResponseEntity<?> archiveCourse(@PathVariable Long courseId){
         archiveService.archiveCourse(courseId);
         return ResponseEntity.ok("Success");

@@ -43,4 +43,11 @@ public class Student {
 
     @Embedded
     private Guardian guardian;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(
+            name = "user_id",
+            referencedColumnName = "userId"
+    )
+    private User user;
 }
