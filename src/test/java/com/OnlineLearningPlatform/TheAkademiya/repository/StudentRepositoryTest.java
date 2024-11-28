@@ -1,9 +1,7 @@
 package com.OnlineLearningPlatform.TheAkademiya.repository;
 
 import com.OnlineLearningPlatform.TheAkademiya.model.Guardian;
-import com.OnlineLearningPlatform.TheAkademiya.model.Roles;
 import com.OnlineLearningPlatform.TheAkademiya.model.Student;
-import com.OnlineLearningPlatform.TheAkademiya.model.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

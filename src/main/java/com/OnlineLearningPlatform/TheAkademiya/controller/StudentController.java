@@ -1,12 +1,13 @@
 package com.OnlineLearningPlatform.TheAkademiya.controller;
 
-import com.OnlineLearningPlatform.TheAkademiya.dto.StudentRegistrationDto;
+import com.OnlineLearningPlatform.TheAkademiya.dto.UserRegistrationDto;
 import com.OnlineLearningPlatform.TheAkademiya.model.Student;
-import com.OnlineLearningPlatform.TheAkademiya.model.User;
 import com.OnlineLearningPlatform.TheAkademiya.repository.StudentRepository;
 import com.OnlineLearningPlatform.TheAkademiya.service.ArchiveService;
 import com.OnlineLearningPlatform.TheAkademiya.service.StudentService;
+import com.OnlineLearningPlatform.TheAkademiya.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,10 +52,18 @@ public class StudentController {
         return ResponseEntity.ok("Success");
     }
 
+    @Autowired
+    private UserService userService;
+
+
     @PostMapping("/student/register")
-    public ResponseEntity<?> registerStudent(@RequestBody StudentRegistrationDto registrationDto) {
-        studentService.registerStudentWithUser(registrationDto.toStudent(), registrationDto.toUser());
-        return ResponseEntity.ok("Student registered successfully");
+    public ResponseEntity<String> registerStudent(@RequestBody UserRegistrationDto registrationDto) {
+        try {
+            userService.registerUser(registrationDto);
+            return ResponseEntity.ok("Student registered successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: " + e.getMessage());
+        }
     }
 
 }

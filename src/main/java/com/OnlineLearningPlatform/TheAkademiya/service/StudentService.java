@@ -2,9 +2,7 @@ package com.OnlineLearningPlatform.TheAkademiya.service;
 
 import com.OnlineLearningPlatform.TheAkademiya.model.Guardian;
 import com.OnlineLearningPlatform.TheAkademiya.model.Student;
-import com.OnlineLearningPlatform.TheAkademiya.model.User;
 import com.OnlineLearningPlatform.TheAkademiya.repository.StudentRepository;
-import com.OnlineLearningPlatform.TheAkademiya.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,9 +13,6 @@ import java.util.List;
 public class StudentService {
 
     private final StudentRepository studentRepository;
-
-    @Autowired
-    public UserRepository userRepository;
 
     @Autowired
     public StudentService(StudentRepository studentRepository) {
@@ -61,14 +56,5 @@ public class StudentService {
     Student getStudentById(Long studentId) {
         return studentRepository.findById(studentId)
                 .orElseThrow(() -> new RuntimeException("Student does not exist!!!"));
-    }
-
-    @Transactional
-    public Student registerStudentWithUser(Student student, User user){
-        student.setUser(user);
-        user.setStudent(student);
-
-        userRepository.save(user);
-        return studentRepository.save(student);
     }
 }

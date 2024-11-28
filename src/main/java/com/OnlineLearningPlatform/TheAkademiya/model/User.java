@@ -1,14 +1,10 @@
 package com.OnlineLearningPlatform.TheAkademiya.model;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Data
@@ -31,24 +27,11 @@ public class User {
             allocationSize = 1
     )
     @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "user_sequence"
+            strategy = GenerationType.SEQUENCE
     )
     private Long userId;
+
     private String username;
     private String password;
-
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "userId"),
-            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "roleId")
-    )
-    private Set<Roles> roles = new HashSet<>();
-
-    @OneToOne(
-            mappedBy = "user",
-            cascade = CascadeType.ALL
-    )
-    private Student student;
+    private String role;
 }

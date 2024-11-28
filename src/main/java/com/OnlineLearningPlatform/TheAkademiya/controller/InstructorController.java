@@ -1,10 +1,13 @@
 package com.OnlineLearningPlatform.TheAkademiya.controller;
 
+import com.OnlineLearningPlatform.TheAkademiya.dto.UserRegistrationDto;
 import com.OnlineLearningPlatform.TheAkademiya.model.Instructor;
 import com.OnlineLearningPlatform.TheAkademiya.repository.InstructorRepository;
 import com.OnlineLearningPlatform.TheAkademiya.service.ArchiveService;
 import com.OnlineLearningPlatform.TheAkademiya.service.InstructorService;
+import com.OnlineLearningPlatform.TheAkademiya.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,5 +51,18 @@ public class InstructorController {
     public ResponseEntity<?> archiveInstructor(@PathVariable Long instructorId){
         archiveService.InstructorArchive(instructorId);
         return ResponseEntity.ok("Success");
+    }
+
+    @Autowired
+    private UserService userService;
+
+    @PostMapping("/instructor/register")
+    public ResponseEntity<String> registerInstructor(@RequestBody UserRegistrationDto userRegistrationDto){
+        try {
+            userService.registerUser(userRegistrationDto);
+            return ResponseEntity.ok("Instructor registered successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: " + e.getMessage());
+        }
     }
 }

@@ -53,6 +53,13 @@ public class CourseService {
     }
 
     public Course newCourse(Course newCourse){
+
+        CourseMaterial courseMaterial = newCourse.getCourseMaterial();
+        if (courseMaterial != null && courseMaterial.getCourseMaterialId() == null) {
+            courseMaterial.setCourse(newCourse); // Set the relationship explicitly
+        }
+
+
         return courseRepository.save(newCourse);
     }
 

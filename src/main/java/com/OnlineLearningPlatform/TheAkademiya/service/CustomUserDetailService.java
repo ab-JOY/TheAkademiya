@@ -9,8 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.Collections;
 
 @Service
 public class CustomUserDetailService implements UserDetailsService {
@@ -24,16 +23,14 @@ public class CustomUserDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
         User user = userRepository.findByUsername(username)
-                .orElseThrow(()-> new UsernameNotFoundException("User not Found"));
+                .orElseThrow(()-> new UsernameNotFoundException("Username does not exist"));
 
-        Set<GrantedAuthority> authorities = user.getRoles().stream()
-                .map(roles -> new SimpleGrantedAuthority(roles.getRoleName()))
-                .collect(Collectors.toSet());
+        GrantedAuthority authority = new SimpleGrantedAuthority(user.getRole());
 
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
                 user.getPassword(),
-                authorities
+                Collections.singletonList(authority)
         );
     }
 }
