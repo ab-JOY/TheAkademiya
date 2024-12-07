@@ -65,16 +65,6 @@ class StudentRepositoryTest {
                 .guardian(guardian)
                 .build();
 
-        Roles studentRole = Roles.builder()
-                .roleName("ROLE_STUDENT")
-                .build();
-
-        User user = User.builder()
-                .username("johndoe123")
-                .password("12345john")
-                .roles(Set.of(studentRole))
-                .build();
-
         studentRepository.save(student);
     }
 

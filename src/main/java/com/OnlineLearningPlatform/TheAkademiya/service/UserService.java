@@ -1,5 +1,6 @@
 package com.OnlineLearningPlatform.TheAkademiya.service;
 
+import com.OnlineLearningPlatform.TheAkademiya.dto.UserLoginDto;
 import com.OnlineLearningPlatform.TheAkademiya.dto.UserRegistrationDto;
 import com.OnlineLearningPlatform.TheAkademiya.model.Guardian;
 import com.OnlineLearningPlatform.TheAkademiya.model.Instructor;
@@ -75,4 +76,13 @@ public class UserService {
 
 
     }
+
+    public boolean authenticateUser(UserLoginDto loginDto) {
+        User user = userRepository.findByUsername(loginDto.getUsername())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        return user.getPassword().equals(loginDto.getPassword());
+    }
+
+
 }

@@ -1,5 +1,6 @@
 package com.OnlineLearningPlatform.TheAkademiya.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -34,5 +35,6 @@ public class CourseMaterial {
             name = "course_id",
             referencedColumnName = "courseId"
     )
+    @JsonIgnore
     private Course course;
 }

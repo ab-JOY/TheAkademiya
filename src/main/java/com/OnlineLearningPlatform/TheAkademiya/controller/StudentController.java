@@ -1,5 +1,6 @@
 package com.OnlineLearningPlatform.TheAkademiya.controller;
 
+import com.OnlineLearningPlatform.TheAkademiya.dto.UserLoginDto;
 import com.OnlineLearningPlatform.TheAkademiya.dto.UserRegistrationDto;
 import com.OnlineLearningPlatform.TheAkademiya.model.Student;
 import com.OnlineLearningPlatform.TheAkademiya.repository.StudentRepository;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin()
+@CrossOrigin("http://localhost:3000")
 public class StudentController {
     @Autowired
     private StudentRepository studentRepository;
@@ -65,5 +66,20 @@ public class StudentController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: " + e.getMessage());
         }
     }
+
+    @PostMapping("/student/login")
+    public ResponseEntity<String> loginStudent(@RequestBody UserLoginDto loginDto) {
+        try {
+            boolean isAuthenticated = userService.authenticateUser(loginDto);
+            if (isAuthenticated) {
+                return ResponseEntity.ok("Login successful");
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+        }
+    }
+
 
 }
